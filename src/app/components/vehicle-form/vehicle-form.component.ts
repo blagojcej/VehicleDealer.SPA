@@ -59,11 +59,11 @@ export class VehicleFormComponent implements OnInit {
     this.vehicleService.create(this.vehicle)
       .subscribe(x => {
         console.log(x);
-        this.alertifyService.success('Succesfully created new vehicle');
-      }, err => {
-        if (err.status === 400) {
-          this.alertifyService.error(err);
-        }
+        this.alertifyService.success('Successfully created new vehicle');
+      // }, err => {
+      //   if (err.status === 400) {
+      //     this.alertifyService.error(err);
+      //   }
       });
   }
 
