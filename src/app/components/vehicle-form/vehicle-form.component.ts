@@ -1,3 +1,5 @@
+import { Feature } from './../../models/feature';
+import { AlertifyService } from './../../services/alertify.service';
 import { Component, OnInit } from '@angular/core';
 import { VehicleService } from '../../services/vehicle.service';
 import { Model } from '../../models/model';
@@ -9,33 +11,37 @@ import { Make } from '../../models/make';
   styleUrls: ['./vehicle-form.component.css']
 })
 export class VehicleFormComponent implements OnInit {
-  makes: any[];
-  models: any[];
-  features: any[];
+  makes: Make[];
+  models: Model[];
+  features: Feature[];
   vehicle: any = {
     features: [],
     contact: {}
   };
 
-  constructor(private vehicleService: VehicleService) { }
+  constructor(private vehicleService: VehicleService,
+    private alertifyService: AlertifyService) { }
 
   ngOnInit() {
     this.vehicleService.getMakes()
-      .subscribe(makes => {
+      .subscribe((makes: Make[]) => {
         this.makes = makes;
         // console.log("MAKES", makes);
       });
 
     this.vehicleService.getFeatures()
-      .subscribe(features => {
+      .subscribe((features: Feature[]) => {
         this.features = features;
         // console.log("FEATURES", features);
       });
   }
 
   onMakeChange() {
-    // console.log("VEHICLE", this.vehicle);
-    var selectedMake = this.makes.find(m => m.id == this.vehicle.makeId);
+    // console.log('VEHICLE', this.vehicle);
+    // console.log('MAKES', this.makes);
+    // debugger;
+    const selectedMake = this.makes.find(m => m.id === +this.vehicle.makeId);
+    // console.log('SELECTED MAKE', selectedMake);
     this.models = selectedMake ? selectedMake.models : [];
     delete this.vehicle.modelId;
   }
@@ -44,14 +50,21 @@ export class VehicleFormComponent implements OnInit {
     if ($event.target.checked) {
       this.vehicle.features.push(featureId);
     } else {
-      var index = this.vehicle.features.indexOf(featureId);
+      const index = this.vehicle.features.indexOf(featureId);
       this.vehicle.features.splice(index, 1);
     }
   }
 
   submit() {
     this.vehicleService.create(this.vehicle)
-      .subscribe(x => console.log(x));
+      .subscribe(x => {
+        console.log(x);
+        this.alertifyService.success('Succesfully created new vehicle');
+      }, err => {
+        if (err.status === 400) {
+          this.alertifyService.error(err);
+        }
+      });
   }
 
 }

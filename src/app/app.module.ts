@@ -1,3 +1,4 @@
+import { AlertifyService } from './services/alertify.service';
 import { VehicleService } from './services/vehicle.service';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -7,7 +8,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavComponent } from './components/nav/nav.component';
 import { routes } from './app.routing';
-import { RouterModule } from '../../node_modules/@angular/router';
+import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
@@ -25,7 +26,8 @@ import { FormsModule } from '@angular/forms';
     RouterModule.forRoot(routes)
   ],
   providers: [
-    VehicleService
+    VehicleService,
+    AlertifyService
   ],
   bootstrap: [AppComponent]
 })

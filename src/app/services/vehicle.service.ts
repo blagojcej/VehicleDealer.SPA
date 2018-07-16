@@ -7,7 +7,7 @@ import { RequestOptions, Headers } from '@angular/http';
   providedIn: 'root'
 })
 export class VehicleService {
-  baseUrl: string = 'http://localhost:5000/api/';
+  baseUrl = 'http://localhost:5000/api/';
 
   constructor(private http: HttpClient) { }
 
@@ -18,18 +18,18 @@ export class VehicleService {
 
   getMakes() {
     return this.http.get(this.baseUrl + 'makes')
-      .pipe(map(res => res));
+      .pipe(res => res);
   }
 
   getFeatures() {
     return this.http.get(this.baseUrl + 'features')
-      .pipe(map(res => res));
+      .pipe(res => res);
   }
 
   create(vehicle) {
     const headers = new HttpHeaders({ 'Content-type': 'application/json' });
     return this.http.post(this.baseUrl + 'vehicles', vehicle, { headers: headers })
-      .pipe(map(res => res));
+      .pipe(res => res);
   }
 
 }
