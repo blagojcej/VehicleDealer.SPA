@@ -1,3 +1,4 @@
+import { SaveVehicle } from './../models/vehicle';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RequestOptions, Headers } from '@angular/http';
@@ -28,6 +29,22 @@ export class VehicleService {
   create(vehicle) {
     const headers = new HttpHeaders({ 'Content-type': 'application/json' });
     return this.http.post(this.baseUrl + 'vehicles', vehicle, { headers: headers })
+      .pipe(res => res);
+  }
+
+  getVehicle(id) {
+    return this.http.get(this.baseUrl + 'vehicles/' + id)
+      .pipe(res => res);
+  }
+
+  update(vehicle: SaveVehicle) {
+    const headers = new HttpHeaders({ 'Content-type': 'application/json' });
+    return this.http.put(this.baseUrl + 'vehicles/' + vehicle.id, vehicle, { headers: headers })
+      .pipe(res => res);
+  }
+
+  delete(id) {
+    return this.http.delete(this.baseUrl + 'vehicles/' + id)
       .pipe(res => res);
   }
 
