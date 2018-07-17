@@ -1,3 +1,4 @@
+import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 import { AlertifyService } from './services/alertify.service';
 import { VehicleService } from './services/vehicle.service';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
@@ -18,7 +19,8 @@ import { AppErrorHandler } from './app.error-handler';
     AppComponent,
     HomeComponent,
     NavComponent,
-    VehicleFormComponent
+    VehicleFormComponent,
+    VehicleListComponent
   ],
   imports: [
     BrowserModule,
