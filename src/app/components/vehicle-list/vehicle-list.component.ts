@@ -1,3 +1,4 @@
+import { QueryResult } from './../../models/queryresult';
 import { VehicleService } from './../../services/vehicle.service';
 import { Vehicle, KeyValuePair } from './../../models/vehicle';
 import { Component, OnInit } from '@angular/core';
@@ -8,10 +9,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./vehicle-list.component.css']
 })
 export class VehicleListComponent implements OnInit {
+  private readonly PAGE_SIZE = 3;
+
   vehicles: Vehicle[];
   // allVehicles: Vehicle[];
   makes: KeyValuePair[];
-  filter: any = {};
+  queryResult: QueryResult<Vehicle>[];
+  query: any = {
+    pageSize: this.PAGE_SIZE
+  };
+  columns = [
+    { title: 'Id', },
+    { title: 'Make', key: 'make', isSortable: true },
+    { title: 'Model', key: 'model', isSortable: true },
+    { title: 'Contact Name', key: 'contactName', isSortable: true },
+    {}
+  ];
 
   constructor(private vehicleService: VehicleService) { }
 
@@ -25,10 +38,11 @@ export class VehicleListComponent implements OnInit {
   }
 
   populateVehicles() {
-    this.vehicleService.getVehicles(this.filter)
-      .subscribe((data: Vehicle[]) => {
+    this.vehicleService.getVehicles(this.query)
+      .subscribe((result: QueryResult<Vehicle>[]) => {
         // this.vehicles = this.allVehicles = data;
-        this.vehicles = data;
+        // console.log(result);
+        this.queryResult = result;
       });
   }
 
@@ -47,12 +61,33 @@ export class VehicleListComponent implements OnInit {
 
     // EXAMPLE FOR FILTERING BY THE MODEL ID
     // this.filter.modelId = 2;
+    this.query.page = 1;
     this.populateVehicles();
   }
 
   resetFilter() {
-    this.filter = {};
-    this.onFilterChange();
+    this.query = {
+      page: 1,
+      pageSize: this.PAGE_SIZE
+    };
+    // this.onFilterChange();
+    this.populateVehicles();
+  }
+
+  sortBy(columnName) {
+    if (this.query.sortBy === columnName) {
+      this.query.isSortAscending = !this.query.isSortAscending;
+    } else {
+      this.query.sortBy = columnName;
+      this.query.isSortAscending = true;
+    }
+
+    this.populateVehicles();
+  }
+
+  onPageChange(page) {
+    this.query.page = page;
+    this.populateVehicles();
   }
 
 }

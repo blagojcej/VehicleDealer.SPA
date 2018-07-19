@@ -1,3 +1,4 @@
+import { PaginationComponent } from './../../../VEHICL~1.SPA/src/app/COMPON~1/shared/pagination.component';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 import { AlertifyService } from './services/alertify.service';
 import { VehicleService } from './services/vehicle.service';
@@ -20,7 +21,8 @@ import { AppErrorHandler } from './app.error-handler';
     HomeComponent,
     NavComponent,
     VehicleFormComponent,
-    VehicleListComponent
+    VehicleListComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
