@@ -38,7 +38,7 @@ export class VehicleFormComponent implements OnInit {
     private router: Router) {
 
     route.params.subscribe(p => {
-      this.vehicle.id = +p['id'];
+      this.vehicle.id = +p['id'] || 0;
     });
   }
 
@@ -117,14 +117,16 @@ export class VehicleFormComponent implements OnInit {
       this.vehicleService.update(this.vehicle)
         .subscribe((v: Vehicle) => {
           this.alertifyService.success('Successfully Update the Vehicle.');
-          this.setVehicle(v);
-          this.populateModels();
+          // this.setVehicle(v);
+          // this.populateModels();
+          this.router.navigate(['/vehicles/', v.id]);
         });
     } else {
       this.vehicleService.create(this.vehicle)
-        .subscribe(x => {
+        .subscribe((x: Vehicle) => {
           console.log(x);
           this.alertifyService.success('Successfully created new vehicle');
+          this.router.navigate(['/vehicles/', x.id]);
           // }, err => {
           //   if (err.status === 400) {
           //     this.alertifyService.error(err);
@@ -133,6 +135,7 @@ export class VehicleFormComponent implements OnInit {
     }
   }
 
+  /*
   delete() {
     if (confirm('Are you sure?')) {
       this.vehicleService.delete(this.vehicle.id)
@@ -141,6 +144,7 @@ export class VehicleFormComponent implements OnInit {
         })
     }
   }
+  */
 
   private setVehicle(v: Vehicle) {
     this.vehicle.id = v.id;
