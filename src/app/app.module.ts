@@ -1,4 +1,7 @@
-import { PaginationComponent } from './../../../VEHICL~1.SPA/src/app/COMPON~1/shared/pagination.component';
+import { BrowserXhrWithProgressService, ProgressService } from './services/progress.service';
+import { BrowserXhr } from '@angular/common/http/src/xhr';
+import { PhotoService } from './services/photo.service';
+import { PaginationComponent } from './components/shared/pagination.component';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 import { AlertifyService } from './services/alertify.service';
 import { VehicleService } from './services/vehicle.service';
@@ -35,7 +38,10 @@ import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.com
   providers: [
     VehicleService,
     AlertifyService,
-    { provide: ErrorHandler, useClass: AppErrorHandler }
+    PhotoService,
+    { provide: ErrorHandler, useClass: AppErrorHandler },
+    { provide: BrowserXhr, useClass: BrowserXhrWithProgressService },
+    ProgressService
   ],
   bootstrap: [AppComponent]
 })
