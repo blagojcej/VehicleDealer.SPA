@@ -29,6 +29,23 @@
             <a [routerLink]="['/vehicles/new']">
               <span class='glyphicon glyphicon-plus'></span> New Vehicle
             </a>
+          </li>          
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li  [routerLinkActive]="['link-active']">
+            <a [routerLink]="['/login']" (click)="authService.login()" *ngIf="!authService.isAuthenticated()">
+              <span class='glyphicon glyphicon-user'></span> Login
+            </a>
+          </li>
+          <li  [routerLinkActive]="['link-active']">
+            <a [routerLink]="['/profile']" *ngIf="authService.isAuthenticated()">
+              <span class='glyphicon glyphicon-user'></span> Profile
+            </a>
+          </li>
+          <li  [routerLinkActive]="['link-active']">
+            <a [routerLink]="['/home']" (click)="authService.logout()" *ngIf="authService.isAuthenticated()">
+              <span class='glyphicon glyphicon-user'></span> Logout
+            </a>
           </li>
         </ul>
       </div>

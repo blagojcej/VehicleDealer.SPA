@@ -4,7 +4,7 @@ import { PhotoService } from './../../services/photo.service';
 import { AlertifyService } from './../../services/alertify.service';
 import { Vehicle } from './../../models/vehicle';
 import { VehicleService } from './../../services/vehicle.service';
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -17,8 +17,11 @@ export class ViewVehicleComponent implements OnInit {
   vehicle: Vehicle;
   vehicleId: number;
   photos: Photo[];
+  progress: any;
+  subscription: any;
 
   constructor(
+    private zone: NgZone,
     private route: ActivatedRoute,
     private router: Router,
     private alertifyService: AlertifyService,
@@ -63,12 +66,26 @@ export class ViewVehicleComponent implements OnInit {
 
   uploadPhoto() {
     const nativeElement: HTMLInputElement = this.fileInput.nativeElement;
+    var file = nativeElement.files[0];
+    nativeElement.value = '';
     // debugger;
-    this.progressService.uploadProgress
-      .subscribe(progress => console.log(progress));
-    this.photoService.upload(this.vehicleId, nativeElement.files[0])
+    this.subscription = this.progressService.startTracking()
+      .subscribe(progress => {
+        console.log(progress);
+        this.zone.run(() => {
+          this.progress = progress;
+        });
+      },
+        null,
+        () => {
+          this.progress = null;
+        });
+    this.photoService.upload(this.vehicleId, file)
       .subscribe((photo: Photo) => {
+        this.subscription.unsubscribe();
         this.photos.push(photo);
+      }, err => {
+        this.alertifyService.error(err);
       });
   }
 }

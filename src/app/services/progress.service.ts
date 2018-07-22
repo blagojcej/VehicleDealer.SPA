@@ -5,8 +5,21 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class ProgressService {
-  uploadProgress: Subject<any> = new Subject();
-  downloadProgress: Subject<any> = new Subject();
+  private uploadProgress: Subject<any>;
+  // downloadProgress: Subject<any> = new Subject();
+
+  startTracking() {
+    this.uploadProgress = new Subject();
+    return this.uploadProgress;
+  }
+
+  notify(progress) {
+    this.uploadProgress.next(progress);
+  }
+
+  endTracking() {
+    this.uploadProgress.complete();
+  }
 
   constructor() { }
 
@@ -22,11 +35,17 @@ export class BrowserXhrWithProgressService extends BrowserXhr {
   build(): XMLHttpRequest {
     const xhr: XMLHttpRequest = super.build();
 
-    xhr.onprogress = (event) => {
-      this.service.downloadProgress.next(this.createProgress(event));
-    }
+    // xhr.onprogress = (event) => {
+    //   this.service.downloadProgress.next(this.createProgress(event));
+    // }
     xhr.upload.onprogress = (event) => {
-      this.service.uploadProgress.next(this.createProgress(event));
+      this.service.notify(this.createProgress(event));
+    }
+
+    xhr.upload.onloadend = () => {
+      //console.log("BEFORE", this.service.uploadProgress);
+      this.service.endTracking();
+      //console.log("AFTER", this.service.uploadProgress);
     }
 
     return xhr;

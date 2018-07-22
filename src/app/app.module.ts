@@ -1,5 +1,8 @@
+import { ProfileComponent } from './components/profile/profile.component';
+import { UserService } from './services/user.service';
+import { AuthService } from './services/auth.service';
 import { BrowserXhrWithProgressService, ProgressService } from './services/progress.service';
-import { BrowserXhr } from '@angular/common/http/src/xhr';
+import { BrowserXhr } from '@angular/http';
 import { PhotoService } from './services/photo.service';
 import { PaginationComponent } from './components/shared/pagination.component';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
@@ -27,7 +30,8 @@ import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.com
     VehicleFormComponent,
     VehicleListComponent,
     PaginationComponent,
-    ViewVehicleComponent
+    ViewVehicleComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +43,8 @@ import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.com
     VehicleService,
     AlertifyService,
     PhotoService,
+    AuthService,
+    UserService,
     { provide: ErrorHandler, useClass: AppErrorHandler },
     { provide: BrowserXhr, useClass: BrowserXhrWithProgressService },
     ProgressService

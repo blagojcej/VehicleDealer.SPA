@@ -1,3 +1,4 @@
+import { ProfileComponent } from './components/profile/profile.component';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
 import { HomeComponent } from './components/home/home.component';
 import { Routes } from '@angular/router';
@@ -7,6 +8,7 @@ import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.com
 export const routes: Routes = [
   { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
+  { path: 'profile', component: ProfileComponent },
   { path: 'vehicles/new', component: VehicleFormComponent },
   { path: 'vehicles/edit/:id', component: VehicleFormComponent },
   { path: 'vehicles/:id', component: ViewVehicleComponent },
